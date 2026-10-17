@@ -7,7 +7,7 @@ const conversationHistory: {
     date: Date,
     message: ChatCompletionRequestMessage | ChatCompletionResponseMessage
 }[] = [];
-const model: string = "gpt-3.5-turbo";
+const model: string = "gpt-5.6-terra";
 
 export async function handleChat(input: string) {
     console.clear();
