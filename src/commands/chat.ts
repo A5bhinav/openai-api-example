@@ -1,11 +1,12 @@
 import {colors, colorText, hideLoader, printFormattedMessage, showLoader} from "../services/utils";
 import {mode, openai} from "../app";
 import {Modes} from "../enums/modes";
-import OpenAI from "openai";
+
+type ChatMessage = { role: "user" | "assistant"; content: string };
 
 const conversationHistory: {
     date: Date,
-    message: OpenAI.Chat.ChatCompletionMessageParam | OpenAI.Chat.ChatCompletionMessage
+    message: ChatMessage
 }[] = [];
 const model: string = "gpt-3.5-turbo";
 
@@ -26,18 +27,18 @@ function printMessage(message: any) {
 export async function chat(input: string) {
     if (input.trim() != "") {
         showLoader();
-        const userMsg: OpenAI.Chat.ChatCompletionMessageParam = {
+        const userMsg: ChatMessage = {
             role: "user",
             content: input
         }
-        const lastMessages: OpenAI.Chat.ChatCompletionMessageParam[] = conversationHistory.map((message) => message.message as OpenAI.Chat.ChatCompletionMessageParam);
-        const res = await openai.chat.completions.create({
+        const lastMessages: ChatMessage[] = conversationHistory.map((message) => message.message);
+        const res = await openai.responses.create({
             model,
-            messages: [...lastMessages, userMsg]
+            input: [...lastMessages, userMsg]
         });
         const iaResponseMsg: any = {
             date: new Date(),
-            message: res.choices[0].message
+            message: {role: "assistant", content: res.output_text}
         };
         const userResponseMsg: any = {
             date: new Date(),
