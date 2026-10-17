@@ -11,12 +11,12 @@ export async function handleImage(input: string) {
 export async function generateImage(input: string) {
     if (input != "") {
         showLoader();
-        const res = await openai.createImage({
+        const res = await openai.images.generate({
             prompt: input,
             n: 1,
             size: "1024x1024"
         });
-        const imageUrl = res.data.data[0].url;
+        const imageUrl = res.data?.[0].url;
         hideLoader();
         console.log(`Generated image URL : ${imageUrl}`);
     }
