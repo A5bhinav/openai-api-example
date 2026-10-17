@@ -1,5 +1,5 @@
 import {config} from 'dotenv';
-import {Configuration, OpenAIApi} from "openai";
+import OpenAI from "openai";
 import readline from "readline";
 import {Command} from "./models/command";
 import {clearUserInput, colors, colorText, printFormattedMessage} from "./services/utils";
@@ -11,9 +11,9 @@ import {generateImage} from "./commands/image";
 
 config();
 
-export const openai = new OpenAIApi(new Configuration({
+export const openai = new OpenAI({
     apiKey: process.env.API_KEY
-}));
+});
 
 const userInterface = readline.createInterface({
     input: process.stdin,
